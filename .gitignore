@@ -1,0 +1,21 @@
+# Dependencias instaladas por Composer.
+APIAA13032/vendor/
+
+# Composer local descargado para instalar Slim en este equipo.
+APIAA13032/composer.phar
+
+# Archivos temporales de sistema o editores.
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Archivos generados por Android Studio cuando se cree el proyecto Android.
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+
+# Paquetes comprimidos finales generados para entrega.
+*.zip

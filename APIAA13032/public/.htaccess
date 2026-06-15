@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# Envia las solicitudes al punto de entrada de Slim cuando no son archivos reales.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

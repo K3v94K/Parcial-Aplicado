@@ -2,6 +2,8 @@ package sv.ues.aa13032.medcontrol.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
@@ -18,6 +20,7 @@ import sv.ues.aa13032.medcontrol.datos.repositorios.RepositorioHospital
 class ActividadPrincipal : AppCompatActivity() {
     private val repositorioHospital = RepositorioHospital()
     private val repositorioDoctor = RepositorioDoctor()
+    private var consultasResumenPendientes = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,10 @@ class ActividadPrincipal : AppCompatActivity() {
     }
 
     private fun cargarResumenModulo() {
+        consultasResumenPendientes = 2
+        findViewById<ProgressBar>(R.id.progresoResumen).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.lblTotalHospitales).text = "--"
+        findViewById<TextView>(R.id.lblTotalDoctores).text = "--"
         actualizarTotalHospitales()
         actualizarTotalDoctores()
     }
@@ -58,10 +65,12 @@ class ActividadPrincipal : AppCompatActivity() {
             ) {
                 val totalHospitales = response.body()?.data.orEmpty().size
                 findViewById<TextView>(R.id.lblTotalHospitales).text = totalHospitales.toString()
+                finalizarConsultaResumen()
             }
 
             override fun onFailure(call: Call<RespuestaApi<List<Hospital>>>, t: Throwable) {
                 findViewById<TextView>(R.id.lblTotalHospitales).text = "0"
+                finalizarConsultaResumen()
             }
         })
     }
@@ -74,11 +83,20 @@ class ActividadPrincipal : AppCompatActivity() {
             ) {
                 val totalDoctores = response.body()?.data.orEmpty().size
                 findViewById<TextView>(R.id.lblTotalDoctores).text = totalDoctores.toString()
+                finalizarConsultaResumen()
             }
 
             override fun onFailure(call: Call<RespuestaApi<List<Doctor>>>, t: Throwable) {
                 findViewById<TextView>(R.id.lblTotalDoctores).text = "0"
+                finalizarConsultaResumen()
             }
         })
+    }
+
+    private fun finalizarConsultaResumen() {
+        consultasResumenPendientes--
+        if (consultasResumenPendientes <= 0) {
+            findViewById<ProgressBar>(R.id.progresoResumen).visibility = View.GONE
+        }
     }
 }

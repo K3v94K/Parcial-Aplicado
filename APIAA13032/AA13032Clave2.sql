@@ -1,4 +1,4 @@
--- Script SQL del Parcial 3 Practico - CLAVE 2
+-- Script SQL para la base de datos de hospitales y doctores.
 -- Carnet: AA13032
 -- Base de datos para gestionar hospitales y doctores.
 

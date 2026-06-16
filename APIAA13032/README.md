@@ -1,6 +1,6 @@
 # APIAA13032
 
-API REST del Parcial 3 Practico para gestionar Hospitales y Doctores.
+API REST para gestionar hospitales y doctores.
 
 ## Estructura
 

@@ -19,3 +19,7 @@ local.properties
 
 # Paquetes comprimidos finales generados para entrega.
 *.zip
+
+# Documentos de referencia del enunciado y notas privadas de trabajo.
+Guia - Parcial 3 Practico- PDM115 2026 CLAVE2 CARNET PAR.pdf
+Instrucciones_Codex_P3_AA13032*.md

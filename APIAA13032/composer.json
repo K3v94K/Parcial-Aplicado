@@ -1,6 +1,6 @@
 {
     "name": "aa13032/api-hospitales-doctores",
-    "description": "API REST para gestionar hospitales y doctores del Parcial 3 Practico.",
+    "description": "API REST para gestionar hospitales y doctores.",
     "type": "project",
     "require": {
         "php": ">=8.0",

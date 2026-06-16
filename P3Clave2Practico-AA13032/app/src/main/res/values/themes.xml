@@ -1,0 +1,19 @@
+<resources>
+    <style name="TemaMedControl" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/azul_primario</item>
+        <item name="colorPrimaryVariant">@color/azul_secundario</item>
+        <item name="colorSecondary">@color/teal_salud</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowBackground">@color/fondo_claro</item>
+        <item name="android:statusBarColor">@color/fondo_claro</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/blanco</item>
+        <item name="materialButtonStyle">@style/BotonMedControl</item>
+    </style>
+
+    <style name="BotonMedControl" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">8dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+</resources>

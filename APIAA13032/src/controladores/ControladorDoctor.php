@@ -26,7 +26,6 @@ class ControladorDoctor
         $datos = $request->getParsedBody() ?? [];
         // Estos campos son obligatorios porque representan las columnas requeridas de la tabla Doctores.
         $camposRequeridos = [
-            'IdDoctor',
             'NombresDoctor',
             'ApellidosDoctor',
             'Especialidad',
@@ -54,10 +53,19 @@ class ControladorDoctor
             return AyudanteRespuesta::error($response, 'PacientesMinDiarios y Sueldo deben ser mayores que cero.', null, 400);
         }
 
-        // Antes de insertar, se verifica la relacion con Hospitales para respetar la clave foranea.
-        if (!$this->repositorioDoctor->existeHospital($datos['IdHospital'])) {
-            return AyudanteRespuesta::error($response, 'No existe un hospital asociado al IdHospital indicado.', null, 404);
+        if (!isset($datos['IdDoctor']) || trim((string) $datos['IdDoctor']) === '') {
+            $datos['IdDoctor'] = $this->repositorioDoctor->generarSiguienteCodigo();
         }
+
+        // El hospital puede recibirse como codigo o nombre para evitar que el usuario trabaje con llaves tecnicas.
+        $hospital = $this->repositorioDoctor->buscarHospitalPorCodigoONombre($datos['IdHospital']);
+
+        if ($hospital === null) {
+            return AyudanteRespuesta::error($response, 'No existe un hospital asociado al dato indicado.', null, 404);
+        }
+
+        $datos['IdHospital'] = $hospital['IdHospital'];
+        $datos['NomHospital'] = $hospital['NomHospital'];
 
         try {
             $this->repositorioDoctor->crear($datos);

@@ -7,14 +7,25 @@ use PDOException;
 
 class ConexionBaseDatos
 {
-    private string $host = '127.0.0.1';
-    private string $database = 'p3_aa13032_salud';
-    private string $user = 'root';
-    private string $password = '';
+    private string $host;
+    private string $port;
+    private string $database;
+    private string $user;
+    private string $password;
+
+    public function __construct()
+    {
+        // En local se usan los valores de XAMPP; en hosting se reemplazan con variables de entorno.
+        $this->host = getenv('DB_HOST') ?: '127.0.0.1';
+        $this->port = getenv('DB_PORT') ?: '3306';
+        $this->database = getenv('DB_NAME') ?: 'p3_aa13032_salud';
+        $this->user = getenv('DB_USER') ?: 'root';
+        $this->password = getenv('DB_PASSWORD') ?: '';
+    }
 
     public function getConnection(): PDO
     {
-        $dsn = "mysql:host={$this->host};dbname={$this->database};charset=utf8mb4";
+        $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->database};charset=utf8mb4";
 
         try {
             // PDO permite trabajar con MySQL usando consultas preparadas y manejo de errores.
@@ -24,8 +35,8 @@ class ConexionBaseDatos
                 PDO::ATTR_EMULATE_PREPARES => false,
             ]);
         } catch (PDOException $exception) {
-            // Se lanza una excepcion general para evitar mostrar datos internos de conexion.
-            throw new PDOException('No se pudo conectar con la base de datos local.');
+            // Se evita exponer credenciales o datos internos de conexion en la respuesta HTTP.
+            throw new PDOException('No se pudo conectar con la base de datos configurada.');
         }
     }
 }

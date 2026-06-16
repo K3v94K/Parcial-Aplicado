@@ -25,12 +25,16 @@ class ControladorHospital
     {
         $datos = $request->getParsedBody() ?? [];
         // Se exigen los campos del diagrama para evitar registros incompletos.
-        $camposRequeridos = ['IdHospital', 'NomHospital', 'CapacidadAtencion', 'Especialidades'];
+        $camposRequeridos = ['NomHospital', 'CapacidadAtencion', 'Especialidades'];
 
         foreach ($camposRequeridos as $campo) {
             if (!isset($datos[$campo]) || trim((string) $datos[$campo]) === '') {
                 return AyudanteRespuesta::error($response, "El campo {$campo} es obligatorio.", null, 400);
             }
+        }
+
+        if (!isset($datos['IdHospital']) || trim((string) $datos['IdHospital']) === '') {
+            $datos['IdHospital'] = $this->repositorioHospital->generarSiguienteCodigo();
         }
 
         try {
@@ -58,5 +62,16 @@ class ControladorHospital
         }
 
         return AyudanteRespuesta::exito($response, 'Hospital encontrado correctamente.', $hospital);
+    }
+
+    public function listar(Request $request, Response $response): Response
+    {
+        $hospitales = $this->repositorioHospital->listarTodos();
+
+        if (count($hospitales) === 0) {
+            return AyudanteRespuesta::exito($response, 'No hay hospitales registrados.', []);
+        }
+
+        return AyudanteRespuesta::exito($response, 'Hospitales consultados correctamente.', $hospitales);
     }
 }

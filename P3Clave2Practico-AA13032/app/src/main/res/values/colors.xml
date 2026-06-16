@@ -1,0 +1,14 @@
+<resources>
+    <color name="azul_primario">#173A8A</color>
+    <color name="azul_secundario">#2563EB</color>
+    <color name="azul_suave">#EEF5FF</color>
+    <color name="teal_salud">#0EA5A4</color>
+    <color name="teal_suave">#E6F7F5</color>
+    <color name="fondo_claro">#F4F8FB</color>
+    <color name="texto_principal">#14213D</color>
+    <color name="texto_secundario">#64748B</color>
+    <color name="borde_suave">#D9E4EF</color>
+    <color name="exito">#10B981</color>
+    <color name="acento">#F4B942</color>
+    <color name="blanco">#FFFFFF</color>
+</resources>

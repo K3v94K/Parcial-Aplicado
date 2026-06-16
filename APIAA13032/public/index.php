@@ -4,19 +4,19 @@ use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// Crea la aplicacion Slim que recibira las solicitudes HTTP de la API.
+// Inicializa la instancia principal de Slim para procesar las solicitudes HTTP.
 $app = AppFactory::create();
 
-// Permite que Slim interprete cuerpos JSON enviados por POST.
+// Habilita la lectura de cuerpos JSON enviados por los clientes de la API.
 $app->addBodyParsingMiddleware();
 
-// Activa el middleware de rutas para que Slim pueda ubicar cada endpoint.
+// Registra el middleware que resuelve las rutas declaradas en los archivos del modulo.
 $app->addRoutingMiddleware();
 
-// Muestra errores durante el desarrollo local. En hosting puede desactivarse.
+// Activa el reporte de errores para facilitar la validacion durante la instalacion.
 $app->addErrorMiddleware(true, true, true);
 
-// Ruta de prueba para confirmar que la API responde antes de crear los modulos.
+// Endpoint base utilizado para comprobar que el servicio esta disponible.
 $app->get('/', function ($request, $response) {
     $response->getBody()->write(json_encode([
         'success' => true,
@@ -27,7 +27,7 @@ $app->get('/', function ($request, $response) {
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-// Las rutas se separan por entidad para mantener ordenada la API.
+// Carga las rutas por entidad para separar hospitales y doctores.
 require __DIR__ . '/../src/rutas/rutasHospital.php';
 require __DIR__ . '/../src/rutas/rutasDoctor.php';
 

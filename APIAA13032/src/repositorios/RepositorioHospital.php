@@ -4,8 +4,7 @@ namespace App\Repositorios;
 
 use PDO;
 
-// Repositorio encargado de las consultas SQL del modulo de Hospitales.
-// Esta capa evita escribir SQL directamente dentro de rutas o controladores.
+// Ejecuta las consultas SQL relacionadas con hospitales.
 class RepositorioHospital
 {
     public function __construct(private PDO $conexion)
@@ -14,7 +13,7 @@ class RepositorioHospital
 
     public function crear(array $hospital): bool
     {
-        // La consulta preparada evita inyecciones SQL al insertar datos enviados por la API.
+        // Usa parametros enlazados para insertar datos sin concatenar valores recibidos por HTTP.
         $sql = 'INSERT INTO Hospitales (IdHospital, NomHospital, CapacidadAtencion, Especialidades)
                 VALUES (:IdHospital, :NomHospital, :CapacidadAtencion, :Especialidades)';
 
@@ -30,7 +29,7 @@ class RepositorioHospital
 
     public function generarSiguienteCodigo(): string
     {
-        // Se toma el mayor correlativo existente para mantener codigos ordenados y faciles de leer.
+        // Calcula el siguiente correlativo disponible manteniendo el prefijo usado por la tabla.
         $sql = "SELECT MAX(CAST(SUBSTRING(IdHospital, 8) AS UNSIGNED)) AS ultimo
                 FROM Hospitales
                 WHERE IdHospital REGEXP '^HOSP-AA[0-9]+$'";
@@ -43,7 +42,7 @@ class RepositorioHospital
 
     public function listarTodos(): array
     {
-        // El listado permite que Android muestre hospitales por nombre en controles de seleccion.
+        // Ordena por nombre para llenar controles de seleccion de forma legible.
         $sql = 'SELECT IdHospital, NomHospital, CapacidadAtencion, Especialidades
                 FROM Hospitales
                 ORDER BY NomHospital';
@@ -53,7 +52,7 @@ class RepositorioHospital
 
     public function buscarPorId(string $idHospital): ?array
     {
-        // La busqueda acepta codigo exacto o coincidencia por nombre para facilitar el uso desde Android.
+        // Prioriza la coincidencia exacta por codigo y luego permite coincidencias parciales por nombre.
         $sql = 'SELECT IdHospital, NomHospital, CapacidadAtencion, Especialidades
                 FROM Hospitales
                 WHERE IdHospital = :IdHospital OR NomHospital LIKE :NomHospital

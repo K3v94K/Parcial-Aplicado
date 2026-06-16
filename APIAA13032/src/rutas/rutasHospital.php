@@ -2,8 +2,8 @@
 
 use App\Controladores\ControladorHospital;
 
-// Aqui se registraran las rutas relacionadas con Hospitales.
-// La logica principal quedara en ControladorHospital para no mezclar capas.
+// Define los endpoints HTTP disponibles para la entidad Hospitales.
+// Cada ruta delega la validacion y la respuesta al controlador correspondiente.
 $app->post('/hospitales', [ControladorHospital::class, 'crear']);
 $app->get('/hospitales', [ControladorHospital::class, 'listar']);
 $app->get('/hospitales/{id}', [ControladorHospital::class, 'buscarPorId']);

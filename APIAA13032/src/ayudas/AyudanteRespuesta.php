@@ -4,8 +4,7 @@ namespace App\Ayudas;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-// Helper reservado para estandarizar respuestas JSON de exito y error.
-// Esto permite que todos los endpoints respondan con el mismo formato.
+// Centraliza la estructura JSON que comparten las respuestas correctas y las respuestas de error.
 class AyudanteRespuesta
 {
     public static function exito(Response $response, string $mensaje, mixed $datos = null, int $codigo = 200): Response
@@ -20,7 +19,7 @@ class AyudanteRespuesta
 
     private static function json(Response $response, bool $exito, string $mensaje, mixed $datos, int $codigo): Response
     {
-        // Se mantiene una estructura uniforme para que Android procese respuestas predecibles.
+        // Define las claves esperadas por el cliente movil en todas las respuestas HTTP.
         $contenido = json_encode([
             'success' => $exito,
             'message' => $mensaje,

@@ -9,8 +9,7 @@ use PDOException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-// Controlador encargado de validar solicitudes HTTP del modulo de Doctores.
-// La persistencia queda delegada al repositorio para mantener separadas las capas.
+// Valida las solicitudes HTTP de doctores antes de enviar los datos al repositorio.
 class ControladorDoctor
 {
     private RepositorioDoctor $repositorioDoctor;
@@ -24,7 +23,7 @@ class ControladorDoctor
     public function crear(Request $request, Response $response): Response
     {
         $datos = $request->getParsedBody() ?? [];
-        // Estos campos son obligatorios porque representan las columnas requeridas de la tabla Doctores.
+        // Requiere los campos necesarios para registrar el doctor y su hospital asociado.
         $camposRequeridos = [
             'NombresDoctor',
             'ApellidosDoctor',
@@ -57,7 +56,7 @@ class ControladorDoctor
             $datos['IdDoctor'] = $this->repositorioDoctor->generarSiguienteCodigo();
         }
 
-        // El hospital puede recibirse como codigo o nombre para evitar que el usuario trabaje con llaves tecnicas.
+        // Resuelve el hospital a su llave primaria aunque el cliente envie el nombre visible.
         $hospital = $this->repositorioDoctor->buscarHospitalPorCodigoONombre($datos['IdHospital']);
 
         if ($hospital === null) {

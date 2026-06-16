@@ -50,7 +50,7 @@ DB_PASSWORD=
 Desde PowerShell:
 
 ```powershell
-cd C:\Users\kevin\Documents\ProyectoPDM\Parcial3\APIAA13032
+cd C:\ruta-del-proyecto\APIAA13032
 C:\xampp\php\php.exe -S 0.0.0.0:8088 -t public
 ```
 

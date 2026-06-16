@@ -4,8 +4,7 @@ namespace App\Repositorios;
 
 use PDO;
 
-// Repositorio encargado de las consultas SQL del modulo de Doctores.
-// Los controladores usan esta clase para no escribir SQL directamente en la capa HTTP.
+// Ejecuta las consultas SQL relacionadas con doctores.
 class RepositorioDoctor
 {
     public function __construct(private PDO $conexion)
@@ -14,7 +13,7 @@ class RepositorioDoctor
 
     public function crear(array $doctor): bool
     {
-        // La insercion usa parametros para proteger los datos recibidos desde Android o Postman.
+        // Usa parametros enlazados para insertar datos sin concatenar valores recibidos por HTTP.
         $sql = 'INSERT INTO Doctores (
                     IdDoctor,
                     NombresDoctor,
@@ -51,7 +50,7 @@ class RepositorioDoctor
 
     public function listarTodos(): array
     {
-        // El orden por apellidos y nombres facilita mostrar una lista estable en Android.
+        // Une doctores con hospitales para devolver el nombre del hospital junto al codigo almacenado.
         $sql = 'SELECT
                     d.IdDoctor,
                     d.NombresDoctor,
@@ -71,7 +70,7 @@ class RepositorioDoctor
 
     public function generarSiguienteCodigo(): string
     {
-        // Se toma el mayor correlativo existente para crear un codigo interno consistente.
+        // Calcula el siguiente correlativo disponible manteniendo el prefijo usado por la tabla.
         $sql = "SELECT MAX(CAST(SUBSTRING(IdDoctor, 7) AS UNSIGNED)) AS ultimo
                 FROM Doctores
                 WHERE IdDoctor REGEXP '^DOC-AA[0-9]+$'";
@@ -84,7 +83,7 @@ class RepositorioDoctor
 
     public function buscarHospitalPorCodigoONombre(string $hospital): ?array
     {
-        // Permite que Android envie el codigo o el nombre del hospital asociado.
+        // Busca el hospital por llave primaria o por coincidencia parcial del nombre visible.
         $sql = 'SELECT IdHospital, NomHospital
                 FROM Hospitales
                 WHERE IdHospital = :Hospital OR NomHospital LIKE :NomHospital
@@ -107,7 +106,7 @@ class RepositorioDoctor
 
     public function existeHospital(string $idHospital): bool
     {
-        // Esta consulta confirma que el doctor se asocie a un hospital previamente registrado.
+        // Verifica la existencia del hospital antes de usarlo como llave foranea.
         $sql = 'SELECT COUNT(*) FROM Hospitales WHERE IdHospital = :IdHospital';
 
         $sentencia = $this->conexion->prepare($sql);

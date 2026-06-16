@@ -2,7 +2,7 @@
 
 use App\Controladores\ControladorDoctor;
 
-// Aqui se registraran las rutas relacionadas con Doctores.
-// La logica principal quedara en ControladorDoctor para no mezclar capas.
+// Define los endpoints HTTP disponibles para la entidad Doctores.
+// Cada ruta delega la validacion y la respuesta al controlador correspondiente.
 $app->post('/doctores', [ControladorDoctor::class, 'crear']);
 $app->get('/doctores', [ControladorDoctor::class, 'listar']);

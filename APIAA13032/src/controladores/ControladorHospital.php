@@ -9,8 +9,7 @@ use PDOException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-// Controlador encargado de validar solicitudes HTTP del modulo de Hospitales.
-// Las consultas SQL se mantienen en el repositorio para no mezclar responsabilidades.
+// Valida las solicitudes HTTP de hospitales antes de enviar los datos al repositorio.
 class ControladorHospital
 {
     private RepositorioHospital $repositorioHospital;
@@ -24,7 +23,7 @@ class ControladorHospital
     public function crear(Request $request, Response $response): Response
     {
         $datos = $request->getParsedBody() ?? [];
-        // Se exigen los campos del diagrama para evitar registros incompletos.
+        // Requiere los campos definidos como obligatorios para insertar un hospital completo.
         $camposRequeridos = ['NomHospital', 'CapacidadAtencion', 'Especialidades'];
 
         foreach ($camposRequeridos as $campo) {
@@ -48,7 +47,7 @@ class ControladorHospital
 
     public function buscarPorId(Request $request, Response $response, array $args): Response
     {
-        // El identificador viene desde la ruta GET /hospitales/{id}.
+        // Obtiene el valor enviado en la ruta para buscar por codigo o por nombre.
         $idHospital = trim((string) ($args['id'] ?? ''));
 
         if ($idHospital === '') {

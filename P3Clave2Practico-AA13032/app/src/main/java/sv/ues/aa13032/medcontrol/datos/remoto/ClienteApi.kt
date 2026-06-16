@@ -8,10 +8,8 @@ object ClienteApi {
     private const val URL_LOCAL_TELEFONO = "http://192.168.1.224:8088/"
     private const val URL_HOSTING = "https://reemplazar-con-url-del-hosting/"
 
-    // Cambiar solo esta linea segun el ambiente de prueba.
-    // Emulador Android: URL_LOCAL_EMULADOR
-    // Telefono fisico en la misma red: URL_LOCAL_TELEFONO
-    // API publicada en hosting: URL_HOSTING
+    // Selecciona la URL base segun el ambiente donde se ejecuta la aplicacion.
+    // Emulador Android usa URL_LOCAL_EMULADOR; telefono fisico usa URL_LOCAL_TELEFONO; hosting usa URL_HOSTING.
     private const val URL_BASE = URL_LOCAL_TELEFONO
 
     val servicio: ServicioApi by lazy {

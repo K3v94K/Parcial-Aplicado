@@ -11,12 +11,11 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# Instala dependencias antes de copiar el codigo para reutilizar la cache de construccion.
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-
-# Copia los archivos de la API dentro del directorio de trabajo del contenedor.
+# Copia los archivos de la API antes de generar el autoload usado dentro del contenedor.
 COPY . .
+
+# Instala dependencias y registra las clases propias con las rutas reales del sistema Linux.
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 # Ejecuta el servidor embebido de PHP usando el puerto asignado por la plataforma.
 CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-10000} -t public"]
